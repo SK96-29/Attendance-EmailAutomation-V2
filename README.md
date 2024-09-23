@@ -47,7 +47,3 @@ Email Composition: It constructs an HTML email for each student, including atten
 Email Sending: The email is sent using the GmailApp service, with error handling for any issues that may arise.
 Logging
 The script logs important actions and errors in the Logger for troubleshooting purposes. You can view the logs in the Apps Script editor by clicking on View > Logs.
-
-Notes
-Ensure that you are within Gmail's daily sending limits to avoid any interruptions.
-You may want to modify the script to customize the email content or style.
