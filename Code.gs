@@ -92,3 +92,55 @@ function sendAttendanceEmails() {
     }
   }
 }
+
+function sendClassPerformanceEmails() {
+  var wb = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet2 = wb.getSheetByName('Sheet2'); // Class performance data
+  var classData = sheet2.getDataRange().getValues(); // Get entire class data
+  
+  // List of recipient emails (you can update this list or fetch from a sheet)
+  var recipientEmails = ['admin1@example.com', 'admin2@example.com'];
+
+  Logger.log('Starting to send class performance data to admins.');
+
+  // Create the HTML table for class data
+  var tableRows = '';
+  for (var i = 0; i < classData.length; i++) {
+    var row = classData[i];
+    tableRows += '<tr>';
+    for (var j = 0; j < row.length; j++) {
+      tableRows += `<td style="border: 1px solid #dddddd; padding: 8px;">${row[j]}</td>`;
+    }
+    tableRows += '</tr>';
+  }
+
+  var htmlMessage = `
+    <p>Dear Admin,</p>
+    <p>Here is the complete class performance data:</p>
+    <table style="border-collapse: collapse; width: 100%;">
+      ${tableRows}
+    </table>
+    <p>Best regards,<br>Your School</p>
+  `;
+
+  // Loop through all recipient emails and send them the table
+  for (var i = 0; i < recipientEmails.length; i++) {
+    var email = recipientEmails[i];
+    var subject = 'Class Performance Data';
+    
+    try {
+      // Send the email
+      GmailApp.sendEmail(email, subject, '', {
+        htmlBody: htmlMessage
+      });
+      
+      // Log success
+      Logger.log('Class performance data successfully sent to: ' + email);
+    } catch (e) {
+      // Log error
+      Logger.log('Error sending class data to ' + email + ': ' + e.message);
+    }
+  }
+
+  Logger.log('Finished sending class performance data to admins.');
+}
